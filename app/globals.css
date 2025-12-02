@@ -10,13 +10,13 @@
    bg-white ;
 }
 
-/* body{
+body{
   @apply bg-gradient-to-tr from-sky-500
    to-green-800;
-} */
+}
 
 .input{
-  @apply border border-gray-300 rounded-lg p-2;
+  @apply border border-gray-300 rounded-lg p-2 w-full;
 }
 
 .text{
@@ -26,6 +26,10 @@
 .button{
   @apply bg-blue-500 text-white px-8 py-2 rounded-lg
    mt-4;
+}
+
+.content-header{
+  @apply text-2xl font-bold pt-0 pb-5 mb-5 border-b-2 border-teal-600 text-teal-600;
 }
 
 

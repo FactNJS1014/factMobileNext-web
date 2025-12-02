@@ -57,6 +57,7 @@ export default function Signin() {
 
         <button className="button" onClick={handleSignin}>
           Sign In
+          <i className="fa-solid fa-right-to-bracket ml-2"></i>
         </button>
       </div>
     </div>
