@@ -2,9 +2,19 @@ import Link from "next/link";
 
 export default function Sidebar() {
   return (
-    <div className="bg-teal-600 h-screen w-64">
-      <div className="p-5 bg-teal-800 text-white text-xl">
-        <h1>Fact Mobile Version 1.0</h1>
+    <div className="bg-teal-600 h-screen w-64 fixed">
+      <div className="p-5 bg-teal-800 text-white">
+        <h1 className="text-xl">Fact Mobile Version 1.0</h1>
+        <div className="flex items-center gap-2 mt-3">
+          <i className="fa-solid fa-user"></i>
+          <span className="w-full text-sm">Natdanai Jansomboon</span>
+          <button className="bg-yellow-500 rounded-full px-2 py-1">
+            <i className="fa-solid fa-pencil"></i>
+          </button>
+          <button className="bg-red-500 rounded-full px-2 py-1">
+            <i className="fa-solid fa-sign-out"></i>
+          </button>
+        </div>
       </div>
       <div className="p-5 text-white text-xl flex flex-col gap-2">
         <div>

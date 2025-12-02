@@ -17,6 +17,26 @@ export default function Page() {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [remark, setRemark] = useState("");
+  const [products, setProducts] = useState([]);
+  const [id, setId] = useState("");
+  const [qty, setQty] = useState(0);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(config.apiUrl + "/buy/list");
+      setProducts(response.data);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Fetch Failed",
+        text: (error as Error).message,
+      });
+    }
+  };
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -37,15 +57,30 @@ export default function Page() {
         customerPhone: customerPhone,
         customerAddress: customerAddress,
         remark: remark,
+        qty: qty,
       };
-      await axios.post(config.apiUrl + "/buy/create", payload);
-
-      Swal.fire({
-        icon: "success",
-        title: "Save Success",
-        text: "Buy saved successfully!",
-        timer: 2000,
-      });
+      if (id === "") {
+        await axios.post(`${config.apiUrl}/buy/create`, payload);
+        Swal.fire({
+          icon: "success",
+          title: "Save Success",
+          text: "Buy saved successfully!",
+          timer: 2000,
+        });
+        onCloseModal();
+        fetchData();
+      } else {
+        await axios.put(`${config.apiUrl}/buy/update/${id}`, payload);
+        setId("");
+        Swal.fire({
+          icon: "success",
+          title: "Update Success",
+          text: "Buy updated successfully!",
+          timer: 2000,
+        });
+        onCloseModal();
+        fetchData();
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -55,17 +90,126 @@ export default function Page() {
     }
   };
 
+  const handleEdit = (id: string) => {
+    const product = products.find((product: any) => product.id === id);
+    if (product) {
+      setSerial(product.serial);
+      setName(product.name);
+      setRelease(product.release);
+      setColor(product.color);
+      setPrice(product.price);
+      setCustomerName(product.customerName);
+      setCustomerPhone(product.customerPhone);
+      setCustomerAddress(product.customerAddress);
+      setRemark(product.remark);
+      setId(product.id);
+      setQty(product.qty);
+      setIsOpen(true);
+    }
+    handleOpenModal();
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const button = Swal.fire({
+        icon: "warning",
+        title: "Delete",
+        text: "Are you sure you want to delete this buy?",
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+      });
+      if ((await button).isConfirmed) {
+        await axios.delete(`${config.apiUrl}/buy/delete/${id}`);
+        Swal.fire({
+          icon: "success",
+          title: "Delete Success",
+          text: "Buy deleted successfully!",
+          timer: 2000,
+        });
+        fetchData();
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Delete Failed",
+        text: (error as Error).message,
+      });
+    }
+  };
+
+  const handleClear = () => {
+    setSerial("");
+    setName("");
+    setRelease("");
+    setColor("");
+    setPrice(0);
+    setCustomerName("");
+    setCustomerPhone("");
+    setCustomerAddress("");
+    setRemark("");
+    setQty(1);
+  };
+
   return (
     <div>
       <h1 className="content-header">รายการซื้อสินค้า</h1>
       <div>
         <button
           className="bg-teal-600 text-white px-8 py-2 rounded-lg"
-          onClick={handleOpenModal}
+          onClick={() => {
+            handleClear();
+            handleOpenModal();
+          }}
         >
           <i className="fa-solid fa-plus mr-2"></i>
           เพิ่มรายการ
         </button>
+
+        <table className="table mt-3">
+          <thead>
+            <tr>
+              <th>Serial</th>
+              <th>ชื่อสินค้า</th>
+              <th>รุ่น</th>
+              <th>สี</th>
+              <th>ราคา</th>
+              <th>ชื่อผู้ซื้อ</th>
+              <th>เบอร์โทรศัพท์</th>
+              <th>หมายเหตุ</th>
+              <th className="w-[120px]"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product: any) => (
+              <tr key={product.id}>
+                <td>{product.serial}</td>
+                <td>{product.name}</td>
+                <td>{product.release}</td>
+                <td>{product.color}</td>
+                <td>{product.price}</td>
+                <td>{product.customerName}</td>
+                <td>{product.customerPhone}</td>
+                <td>{product.remark}</td>
+                <td className="text-center">
+                  <button
+                    className="btn-info mr-1"
+                    onClick={() => handleEdit(product.id)}
+                  >
+                    <i className="fa-solid fa-edit"></i>
+                  </button>
+                  <button
+                    className="btn-danger"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <Modal title="เพิ่มรายการ" isOpen={isOpen} onClose={onCloseModal}>
@@ -130,6 +274,13 @@ export default function Page() {
           type="text"
           onChange={(e) => setRemark(e.target.value)}
           value={remark}
+          className="input"
+        />
+        <div className="mt-2">จำนวน</div>
+        <input
+          type="number"
+          onChange={(e) => setQty(Number(e.target.value ?? 0))}
+          value={qty}
           className="input"
         />
         <div>
