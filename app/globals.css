@@ -10,10 +10,10 @@
    bg-white ;
 }
 
-body{
+/* body{
   @apply bg-gradient-to-tr from-sky-500
    to-green-800;
-}
+} */
 
 .input{
   @apply border border-gray-300 rounded-lg p-2;

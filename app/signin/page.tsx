@@ -1,10 +1,39 @@
 "use client";
 
 import { useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { config } from "../config";
+import { useRouter } from "next/navigation";
 
 export default function Signin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const router = useRouter();
+
+  const handleSignin = async () => {
+    try {
+      const payload = {
+        username: username,
+        password: password,
+      };
+      const response = await axios.post(config.apiUrl + "/signin", payload);
+      //   console.log(response.data);
+      if (response.data.token !== null) {
+        localStorage.setItem("token", response.data.token);
+        router.push("/backoffice/dashboard");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Sign In Failed",
+          text: "Invalid username or password!",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="signin-container">
@@ -26,7 +55,9 @@ export default function Signin() {
           className="input"
         />
 
-        <button className="button">Sign In</button>
+        <button className="button" onClick={handleSignin}>
+          Sign In
+        </button>
       </div>
     </div>
   );
