@@ -218,7 +218,7 @@ export default function Page() {
           type="text"
           onChange={(e) => setSerial(e.target.value)}
           value={serial}
-          className="input"
+          className="border border-gray-700 p-2 w-full rounded-md"
         />
         <div className="mt-2">ชื่อสินค้า</div>
         <input

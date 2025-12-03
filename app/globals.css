@@ -15,8 +15,8 @@ body{
    to-green-800;
 }
 
-.input{
-  @apply border border-gray-300 rounded-lg p-2 w-full;
+input{
+  @apply border border-gray-400 p-2 w-full rounded-md;
 }
 
 .text{
