@@ -31,7 +31,19 @@ export default function Signin() {
         });
       }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Sign In Failed",
+          text: "Invalid username or password!",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Sign In Failed",
+          text: (error as Error).message,
+        });
+      }
     }
   };
 

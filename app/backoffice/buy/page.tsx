@@ -170,28 +170,28 @@ export default function Page() {
         <table className="table mt-3">
           <thead>
             <tr>
-              <th>Serial</th>
-              <th>ชื่อสินค้า</th>
-              <th>รุ่น</th>
-              <th>สี</th>
-              <th>ราคา</th>
-              <th>ชื่อผู้ซื้อ</th>
-              <th>เบอร์โทรศัพท์</th>
-              <th>หมายเหตุ</th>
+              <th className="text-left">Serial</th>
+              <th className="text-left">ชื่อสินค้า</th>
+              <th className="text-left">รุ่น</th>
+              <th className="text-left">สี</th>
+              <th className="text-right">ราคา</th>
+              <th className="text-left">ชื่อผู้ซื้อ</th>
+              <th className="text-left">เบอร์โทรศัพท์</th>
+              <th className="text-left">หมายเหตุ</th>
               <th className="w-[120px]"></th>
             </tr>
           </thead>
           <tbody>
             {products.map((product: any) => (
               <tr key={product.id}>
-                <td>{product.serial}</td>
-                <td>{product.name}</td>
-                <td>{product.release}</td>
-                <td>{product.color}</td>
-                <td>{product.price}</td>
-                <td>{product.customerName}</td>
-                <td>{product.customerPhone}</td>
-                <td>{product.remark}</td>
+                <td className="text-left">{product.serial}</td>
+                <td className="text-left">{product.name}</td>
+                <td className="text-left">{product.release}</td>
+                <td className="text-left">{product.color}</td>
+                <td className="text-right">{product.price.toLocaleString()}</td>
+                <td className="text-left">{product.customerName}</td>
+                <td className="text-left">{product.customerPhone}</td>
+                <td className="text-left">{product.remark}</td>
                 <td className="text-center">
                   <button
                     className="btn-info mr-1"

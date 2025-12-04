@@ -98,7 +98,7 @@ export default function Sidebar() {
         <div className="flex items-center gap-2 mt-3">
           <i className="fa-solid fa-user"></i>
           <span className="w-full text-sm">
-            {name} ({level})
+            {name}: {level}
           </span>
           <button
             className="bg-yellow-500 rounded-full px-2 py-1"
