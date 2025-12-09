@@ -6,8 +6,15 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Modal from "../modal";
 
+interface User {
+  id: string;
+  name: string;
+  level: string;
+  username: string;
+}
+
 export default function Page() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -71,13 +78,17 @@ export default function Page() {
   };
 
   const handleEdit = async (id: string) => {
-    const user = users.find((user: any) => user.id === id);
+    const user = users.find((u: User) => u.id === id);
 
-    setId(user.id);
-    setName(user.name);
-    setUsername(user.username);
-    setLevel(user.level);
-    setIsModalOpen(true);
+    if (user) {
+      setId(user.id ?? "");
+      setName(user.name ?? "");
+      setUsername(user.username ?? "");
+      setLevel(user.level ?? "user");
+      setPassword("");
+      setConfirmPassword("");
+      setIsModalOpen(true);
+    }
   };
 
   const handleDelete = async (id: string) => {
