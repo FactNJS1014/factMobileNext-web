@@ -6,6 +6,20 @@ import Swal from "sweetalert2";
 import { config } from "../../config";
 import Modal from "../modal";
 
+interface Product {
+  id: string;
+  serial: string;
+  name: string;
+  release: string;
+  color: string;
+  price: number;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  remark: string;
+  qty: number;
+}
+
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [serial, setSerial] = useState("");
@@ -17,7 +31,7 @@ export default function Page() {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
   const [remark, setRemark] = useState("");
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [id, setId] = useState("");
   const [qty, setQty] = useState(0);
 
@@ -98,20 +112,6 @@ export default function Page() {
       });
     }
   };
-
-  interface Product {
-    id: string;
-    serial: string;
-    name: string;
-    release: string;
-    color: string;
-    price: number;
-    customerName: string;
-    customerPhone: string;
-    customerAddress: string;
-    remark: string;
-    qty: number;
-  }
 
   const handleEdit = (id: string) => {
     const product = products.find((p: Product) => p.id === id);
@@ -233,7 +233,7 @@ export default function Page() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product: any) => (
+            {products.map((product: Product) => (
               <tr key={product.id}>
                 <td className="text-left">{product.serial}</td>
                 <td className="text-left">{product.name}</td>
