@@ -8,7 +8,7 @@ import Modal from "../modal";
 import dayjs from "dayjs";
 
 interface Service {
-  id: number;
+  id: string;
   name: string;
   price: number;
   remark: string;
@@ -19,7 +19,7 @@ export default function ServiceRepair() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [remark, setRemark] = useState("");
-  const [id, setId] = useState(0);
+  const [id, setId] = useState("");
   const [services, setServices] = useState<Service[]>([]);
 
   const handleOpenModal = () => {
@@ -52,7 +52,7 @@ export default function ServiceRepair() {
         price: price,
         remark: remark,
       };
-      if (id != 0) {
+      if (id !== "") {
         await axios.put(config.apiUrl + "/service/update/" + id, payload);
       } else {
         await axios.post(config.apiUrl + "/service/create", payload);
@@ -74,21 +74,21 @@ export default function ServiceRepair() {
     setName("");
     setPrice(0);
     setRemark("");
-    setId(0);
+    setId("");
   };
 
   const handleEdit = (id: string) => {
-    const repair = services.find((service: Service) => service.id === id);
+    const repair = services.find((s: Service) => s.id === id);
     if (repair) {
-      setName(repair.name);
-      setPrice(repair.price);
-      setRemark(repair.remark);
-      setId(repair.id);
+      setName(repair.name ?? "");
+      setPrice(repair.price ?? 0);
+      setRemark(repair.remark ?? "");
+      setId(repair.id ?? "");
       handleOpenModal();
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
       const button = await Swal.fire({
         icon: "warning",
