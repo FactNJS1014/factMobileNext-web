@@ -7,13 +7,20 @@ import axios from "axios";
 import Modal from "../modal";
 import dayjs from "dayjs";
 
+interface Service {
+  id: number;
+  name: string;
+  price: number;
+  remark: string;
+}
+
 export default function ServiceRepair() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [remark, setRemark] = useState("");
   const [id, setId] = useState(0);
-  const [services, setServices] = useState([]);
+  const [services, setServices] = useState<Service[]>([]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -71,7 +78,7 @@ export default function ServiceRepair() {
   };
 
   const handleEdit = (id: string) => {
-    const repair = services.find((service) => service.id === id) as any;
+    const repair = services.find((service: Service) => service.id === id);
     if (repair) {
       setName(repair.name);
       setPrice(repair.price);
