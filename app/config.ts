@@ -1,3 +1,3 @@
 export const config = {
- apiUrl: "http://localhost:8080/api",
+ apiUrl: "https://mobileshop-api-baqx.onrender.com/api",
 };
