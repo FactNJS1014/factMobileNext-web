@@ -182,7 +182,7 @@ export default function SellPage() {
           </tr>
         </thead>
         <tbody>
-          {sells.map((sell) => (
+          {sells.map((sell: any) => (
             <tr key={sell.id}>
               <td className="text-left">{sell.product.serial}</td>
               <td className="text-left">{sell.product.name}</td>
