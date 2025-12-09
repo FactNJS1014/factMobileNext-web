@@ -21,14 +21,23 @@ export default function Page() {
   const [id, setId] = useState("");
   const [qty, setQty] = useState(0);
 
+  /***
+   * TODO: Add pagination
+   */
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [totalRows, setTotalRows] = useState(0);
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(config.apiUrl + "/buy/list");
-      setProducts(response.data);
+      const response = await axios.get(`${config.apiUrl}/buy/list/${page}`);
+      setProducts(response.data.products);
+      setTotalRows(response.data.total);
+      setTotalPage(response.data.totalPages);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -152,6 +161,27 @@ export default function Page() {
     setQty(1);
   };
 
+  const exportExcel = async () => {
+    try {
+      const payload = {
+        products: products,
+      };
+      const response = await axios.post(`${config.apiUrl}/buy/export`, payload);
+      const filename = response.data.filename;
+      const a = document.createElement("a");
+      a.href = `${config.apiUrl}/upload/${filename}`;
+      a.download = filename;
+      a.target = "_blank";
+      a.click();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Fetch Failed",
+        text: (error as Error).message,
+      });
+    }
+  };
+
   return (
     <div>
       <h1 className="content-header">รายการซื้อสินค้า</h1>
@@ -165,6 +195,13 @@ export default function Page() {
         >
           <i className="fa-solid fa-plus mr-2"></i>
           เพิ่มรายการ
+        </button>
+        <button
+          className="bg-teal-600 text-white px-8 py-2 rounded-lg ms-2"
+          onClick={() => exportExcel()}
+        >
+          <i className="fa-solid fa-file-excel mr-2"></i>
+          Export Excel
         </button>
 
         <table className="table mt-3">
@@ -210,6 +247,49 @@ export default function Page() {
             ))}
           </tbody>
         </table>
+        <div className="mt-5">
+          <div>รายการทั้งหมด : {totalRows} รายการ</div>
+          <div>
+            หน้า : {page} จาก {totalPage}
+          </div>
+          <div className="flex gap-1">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={() => setPage(1)}
+            >
+              <i className="fa-solid fa-arrow-left mr-2"></i>หน้าแรก
+            </button>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={() => setPage(page - 1)}
+            >
+              <i className="fa-solid fa-arrow-left"></i>
+            </button>
+            {Array.from({ length: totalPage }, (_, index) => (
+              <button
+                key={index}
+                className={`bg-blue-500 text-white px-4 py-2 rounded-lg ${
+                  page === index + 1 ? "btn-active" : ""
+                }`}
+                onClick={() => setPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={() => setPage(page + 1)}
+            >
+              <i className="fa-solid fa-arrow-right"></i>
+            </button>
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={() => setPage(totalPage)}
+            >
+              <i className="fa-solid fa-arrow-right mr-2"></i>หน้าสุดท้าย
+            </button>
+          </div>
+        </div>
       </div>
 
       <Modal title="เพิ่มรายการ" isOpen={isOpen} onClose={onCloseModal}>

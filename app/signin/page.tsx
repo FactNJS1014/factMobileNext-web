@@ -22,7 +22,11 @@ export default function Signin() {
       //   console.log(response.data);
       if (response.data.token !== null) {
         localStorage.setItem("token", response.data.token);
-        router.push("/backoffice/dashboard");
+        if (response.data.level === "admin") {
+          router.push("/backoffice/dashboard");
+        } else {
+          router.push("/backoffice/sell");
+        }
       } else {
         Swal.fire({
           icon: "error",

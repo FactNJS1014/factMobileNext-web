@@ -61,6 +61,10 @@ input{
   @apply bg-red-500 text-white px-3 py-2 rounded-lg;
 }
 
+.btn-active{
+  @apply border-2 border-teal-600 bg-white text-teal-600;
+}
+
 
 
 
