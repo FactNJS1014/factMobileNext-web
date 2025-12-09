@@ -34,7 +34,7 @@ export default function Signin() {
           text: "Invalid username or password!",
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.response.status === 401) {
         Swal.fire({
           icon: "error",
