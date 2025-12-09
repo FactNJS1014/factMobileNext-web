@@ -12,6 +12,7 @@ interface Service {
   name: string;
   price: number;
   remark: string;
+  payDate: string;
 }
 
 export default function ServiceRepair() {
