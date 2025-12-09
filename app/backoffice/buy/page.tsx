@@ -99,20 +99,34 @@ export default function Page() {
     }
   };
 
+  interface Product {
+    id: string;
+    serial: string;
+    name: string;
+    release: string;
+    color: string;
+    price: number;
+    customerName: string;
+    customerPhone: string;
+    customerAddress: string;
+    remark: string;
+    qty: number;
+  }
+
   const handleEdit = (id: string) => {
-    const product = products.find((product: any) => product.id === id);
+    const product = products.find((p: Product) => p.id === id);
     if (product) {
-      setSerial(product.serial);
-      setName(product.name);
-      setRelease(product.release);
-      setColor(product.color);
-      setPrice(product.price);
-      setCustomerName(product.customerName);
-      setCustomerPhone(product.customerPhone);
-      setCustomerAddress(product.customerAddress);
-      setRemark(product.remark);
+      setSerial(product.serial ?? "");
+      setName(product.name ?? "");
+      setRelease(product.release ?? "");
+      setColor(product.color ?? "");
+      setPrice(product.price ?? 0);
+      setCustomerName(product.customerName ?? "");
+      setCustomerPhone(product.customerPhone ?? "");
+      setCustomerAddress(product.customerAddress ?? "");
+      setRemark(product.remark ?? "");
       setId(product.id);
-      setQty(product.qty);
+      setQty(product.qty ?? 0);
       setIsOpen(true);
     }
     handleOpenModal();
